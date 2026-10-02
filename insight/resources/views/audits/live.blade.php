@@ -146,6 +146,11 @@
                     <li class="severity-{{ $finding['severity'] }}"><span>{{ $finding['severity'] }}</span><strong>{{ $finding['title'] }}</strong><em>{{ $finding['recommendation'] }}</em></li>
                 @endforeach
             </ol>
+            <div class="fix-offer">
+                <h3>سایت‌دوز می‌تواند این مشکلات را برایت برطرف کند.</h3>
+                <p>این گزارش از بررسی همین وب‌سایت ساخته شده است. قدم بعدی، تصمیم درباره اصلاح همین مشکلات است.</p>
+                <a href="{{ config('sitedooz.web_url') }}/moshavere-tarahi-site-gorgan#consultation-form" data-track="consultation_requested">رفع این مشکلات توسط سایت‌دوز</a>
+            </div>
         </section>
     </main>
     <aside id="page-drawer" class="drawer" aria-hidden="true">

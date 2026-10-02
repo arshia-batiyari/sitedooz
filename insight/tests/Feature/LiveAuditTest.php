@@ -135,6 +135,7 @@ class LiveAuditTest extends TestCase
         $this->get('/audits/'.$uuid)
             ->assertOk()
             ->assertSee('گزارش نهایی')
+            ->assertSee('این مشکلات را برایت برطرف کند')
             ->assertSee('توضیح متا وجود ندارد')
             ->assertSee('panel failure is-hidden', false);
     }

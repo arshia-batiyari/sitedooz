@@ -181,6 +181,8 @@ body[data-live="1"] .score-ring { transition: background 420ms ease; }
 .graph-legend i[data-state="error"] { border-color: var(--danger); }
 .graph-legend i[data-state="completed"] { border-color: var(--accent); }
 .graph-summary { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 12px; color: var(--muted); font-size: 0.92rem; }
+.fix-offer { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); }
+.fix-offer a { display: inline-block; margin-top: 8px; }
 .drawer .note { display: block; color: var(--muted); }
 .drawer #drawer-body > button { width: 100%; margin-top: 8px; text-align: start; }
 .drawer { position: fixed; top: 0; bottom: 0; right: 0; width: min(380px, 100%); background: var(--surface); border-left: 1px solid var(--line); box-shadow: var(--shadow); padding: 24px; overflow: auto; transform: translateX(16px); opacity: 0; pointer-events: none; transition: opacity 180ms ease, transform 180ms ease; z-index: 20; }

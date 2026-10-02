@@ -47,4 +47,12 @@ class CreateAuditTest extends TestCase
         $this->postJson('/api/audits', ['url' => 'http://127.0.0.1'])->assertStatus(422);
         $this->postJson('/api/audits', ['url' => 'not-a-url'])->assertStatus(422);
     }
+
+    public function test_marketing_url_prefills_the_create_form(): void
+    {
+        $this->get('/?url=https://example.com&autostart=1')
+            ->assertOk()
+            ->assertSee('value="https://example.com"', false)
+            ->assertSee('requestSubmit', false);
+    }
 }

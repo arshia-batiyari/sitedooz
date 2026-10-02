@@ -13,15 +13,18 @@
         <section class="panel form-panel">
             <h1>تحلیل زنده وب‌سایت</h1>
             <p class="lede">نشانی سایت را وارد کنید. روند بررسی، صفحه‌ها و یافته‌ها همان لحظه که در سرور اتفاق می‌افتند نمایش داده می‌شوند.</p>
-            <form method="post" action="/audits">
+            <form id="audit-create-form" method="post" action="/audits">
                 @csrf
                 <label for="url">نشانی وب‌سایت</label>
-                <input id="url" name="url" type="url" inputmode="url" autocomplete="url" placeholder="https://example.com" value="{{ old('url') }}" required>
+                <input id="url" name="url" type="url" inputmode="url" autocomplete="url" placeholder="https://example.com" value="{{ old('url', request()->query('url')) }}" required>
                 @error('url')
                     <p class="form-error">{{ $message }}</p>
                 @enderror
                 <button type="submit">شروع تحلیل</button>
             </form>
+            @if (request()->query('autostart') === '1' && is_string(request()->query('url')) && request()->query('url') !== '' && ! $errors->any())
+                <script>document.getElementById('audit-create-form')?.requestSubmit();</script>
+            @endif
         </section>
     </main>
 </body>

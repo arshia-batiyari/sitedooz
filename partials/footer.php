@@ -4,9 +4,10 @@
     <div class="relative z-10">
     <h2 class="text-3xl font-bold mb-6"><?= e($settings['footer_title'] ?? 'آماده‌ای سایتت رو حرفه‌ای داشته باشی؟') ?></h2>
     <p class="text-white/80 mb-10 max-w-xl mx-auto px-4"><?= e($settings['footer_description'] ?? 'همین حالا تماس بگیر و مشاوره رایگان دریافت کن.') ?></p>
-    <a href="<?= site_url('moshavere-tarahi-site-gorgan') ?>#consultation-form" class="call-btn inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 transition px-8 py-4 rounded-xl text-lg font-bold shadow-lg hover:scale-105 active:scale-95">
-      <?= svg_icon('phone', 'w-5 h-5 call-icon') ?> ثبت درخواست مشاوره
+    <a href="<?= site_url('#audit') ?>" class="call-btn inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 transition px-8 py-4 rounded-xl text-lg font-bold shadow-lg hover:scale-105 active:scale-95">
+      تحلیل رایگان سایت
     </a>
+    <p class="mt-4"><a href="<?= site_url('moshavere-tarahi-site-gorgan') ?>#consultation-form" class="text-emerald-300 font-bold hover:underline" data-track="consultation_requested">درخواست بررسی برای رفع مشکلات</a></p>
     <?php if (!empty($settings['phone'])): ?>
     <p class="mt-6 text-white/70 text-sm">یا مستقیم تماس بگیرید:
         <a href="tel:<?= e(preg_replace('/\D+/', '', $settings['phone'])) ?>" class="text-emerald-300 font-black hover:underline" style="direction:ltr; display:inline-block;"><?= e($settings['phone']) ?></a>
@@ -79,9 +80,11 @@
 	if (isHidden) {
 		mobileMenu.classList.remove("opacity-0", "pointer-events-none", "-translate-y-5");
 		mobileMenu.classList.add("opacity-100", "translate-y-0");
+		menuBtn.setAttribute("aria-expanded", "true");
 	} else {
 		mobileMenu.classList.add("opacity-0", "pointer-events-none", "-translate-y-5");
 		mobileMenu.classList.remove("opacity-100", "translate-y-0");
+		menuBtn.setAttribute("aria-expanded", "false");
 	}
 	};
 
