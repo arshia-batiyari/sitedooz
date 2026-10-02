@@ -1,0 +1,99 @@
+<svg viewBox="0 0 700 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="processIllusTitle">
+  <title id="processIllusTitle">فرآیند اجرای پروژه در سایت دوز: از تحلیل تا طراحی و مدیریت</title>
+  <defs>
+    <linearGradient id="pBgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="55%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#083b34"/>
+    </linearGradient>
+    <linearGradient id="pEmerald" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6ee7b7"/>
+      <stop offset="1" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="pSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7dd3fc"/>
+      <stop offset="1" stop-color="#0284c7"/>
+    </linearGradient>
+    <radialGradient id="pGlow" cx="80%" cy="0%" r="70%">
+      <stop offset="0" stop-color="#2dd4bf" stop-opacity=".2"/>
+      <stop offset="100%" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="pDots" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1.2" fill="rgba(255,255,255,.06)"/>
+    </pattern>
+    <clipPath id="pClip">
+      <rect width="700" height="520" rx="28"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#pClip)">
+  <rect width="700" height="520" fill="url(#pBgGrad)"/>
+  <rect width="700" height="520" fill="url(#pDots)"/>
+  <circle cx="600" cy="40" r="200" fill="url(#pGlow)"/>
+
+  <!-- browser chrome -->
+  <g>
+    <rect x="0" y="0" width="700" height="44" fill="#111827"/>
+    <circle cx="28" cy="22" r="6" fill="#f87171"/>
+    <circle cx="48" cy="22" r="6" fill="#fbbf24"/>
+    <circle cx="68" cy="22" r="6" fill="#34d399"/>
+    <rect x="290" y="12" width="140" height="20" rx="10" fill="#1e293b"/>
+    <text x="360" y="26" text-anchor="middle" font-family="Vazirmatn, Tahoma, sans-serif" font-size="11" fill="rgba(255,255,255,.55)" style="direction:ltr">sitedooz.ir</text>
+  </g>
+
+  <!-- Step 1: wireframe (right side, RTL-first) -->
+  <g transform="translate(420,80)">
+    <rect width="230" height="300" rx="18" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.1)" stroke-dasharray="5 5"/>
+    <rect x="24" y="24" width="182" height="16" rx="4" fill="rgba(255,255,255,.14)"/>
+    <rect x="24" y="52" width="130" height="10" rx="3" fill="rgba(255,255,255,.09)"/>
+    <rect x="24" y="70" width="150" height="10" rx="3" fill="rgba(255,255,255,.09)"/>
+    <rect x="24" y="100" width="182" height="80" rx="10" fill="rgba(255,255,255,.06)"/>
+    <rect x="24" y="196" width="85" height="60" rx="8" fill="rgba(255,255,255,.05)"/>
+    <rect x="121" y="196" width="85" height="60" rx="8" fill="rgba(255,255,255,.05)"/>
+    <text x="115" y="285" text-anchor="middle" font-family="Vazirmatn, Tahoma, sans-serif" font-size="13" font-weight="700" fill="rgba(255,255,255,.45)">طرح اولیه</text>
+  </g>
+
+  <!-- arrow -->
+  <g transform="translate(350,225)" stroke="#5eead4" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M30 0 L0 0 M8 -8 L0 0 L8 8"/>
+  </g>
+
+  <!-- Step 2/3: finished page (left side) -->
+  <g transform="translate(60,80)">
+    <rect width="240" height="300" rx="18" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.1)"/>
+    <rect x="24" y="24" width="140" height="16" rx="4" fill="url(#pEmerald)"/>
+    <rect x="24" y="52" width="192" height="9" rx="3" fill="rgba(255,255,255,.18)"/>
+    <rect x="24" y="68" width="160" height="9" rx="3" fill="rgba(255,255,255,.12)"/>
+    <rect x="24" y="98" width="192" height="70" rx="10" fill="rgba(45,212,191,.12)"/>
+    <g transform="translate(40,116)" stroke="url(#pEmerald)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M0 34 L14 20 L26 28 L46 4"/>
+      <path d="M34 4h12v12"/>
+    </g>
+    <rect x="24" y="182" width="90" height="66" rx="10" fill="rgba(56,189,248,.12)"/>
+    <circle cx="69" cy="212" r="16" fill="none" stroke="url(#pSky)" stroke-width="3"/>
+    <rect x="126" y="182" width="90" height="66" rx="10" fill="rgba(16,185,129,.12)"/>
+    <text x="171" y="210" text-anchor="middle" font-family="Vazirmatn, Tahoma, sans-serif" font-size="18" font-weight="900" fill="#6ee7b7">۲۴٪+</text>
+    <text x="171" y="228" text-anchor="middle" font-family="Vazirmatn, Tahoma, sans-serif" font-size="10" fill="rgba(255,255,255,.55)">رشد فروش</text>
+    <text x="120" y="285" text-anchor="middle" font-family="Vazirmatn, Tahoma, sans-serif" font-size="13" font-weight="700" fill="#6ee7b7">سایت نهایی و آماده فروش</text>
+  </g>
+
+  <!-- stitch thread connecting the two panels -->
+  <path d="M 300 230 Q 335 210 350 230" fill="none" stroke="rgba(94,234,212,.5)" stroke-width="2.5" stroke-dasharray="1 8" stroke-linecap="round"/>
+
+  <!-- step chips -->
+  <g font-family="Vazirmatn, Tahoma, sans-serif" font-size="12.5" font-weight="800">
+    <g transform="translate(535,410)">
+      <rect x="-46" y="-16" width="92" height="32" rx="16" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.14)"/>
+      <text x="0" y="5" text-anchor="middle" fill="#fff">۱ تحلیل</text>
+    </g>
+    <g transform="translate(350,410)">
+      <rect x="-52" y="-16" width="104" height="32" rx="16" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.14)"/>
+      <text x="0" y="5" text-anchor="middle" fill="#fff">۲ طراحی</text>
+    </g>
+    <g transform="translate(160,410)">
+      <rect x="-58" y="-16" width="116" height="32" rx="16" fill="rgba(16,185,129,.18)" stroke="rgba(16,185,129,.4)"/>
+      <text x="0" y="5" text-anchor="middle" fill="#6ee7b7">۳ مدیریت و فروش</text>
+    </g>
+  </g>
+  </g>
+</svg>
