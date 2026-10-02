@@ -215,7 +215,7 @@
             return value > 0 ? 'نقشه سایت پیدا شد' : 'نقشه سایت پیدا نشد';
         }
         if (name === 'https') {
-            return value >= 1 ? 'اتصال HTTPS بررسی شد' : 'سایت از HTTPS استفاده نمی‌کند';
+            return value >= 1 ? 'اتصال HTTPS بررسی شد' : 'اتصال صفحه اصلی روی HTTP بود';
         }
         if (name === 'response_time') {
             return 'زمان پاسخ صفحه اصلی: ' + Math.round(value) + ' میلی‌ثانیه';

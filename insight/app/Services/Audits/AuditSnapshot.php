@@ -174,7 +174,7 @@ final class AuditSnapshot
         return match ($metric->name) {
             'robots_txt' => $value >= 1 ? 'robots.txt بررسی شد' : 'robots.txt پیدا نشد',
             'sitemap' => $value > 0 ? 'نقشه سایت پیدا شد' : 'نقشه سایت پیدا نشد',
-            'https' => $value >= 1 ? 'اتصال HTTPS بررسی شد' : 'سایت از HTTPS استفاده نمی‌کند',
+            'https' => $value >= 1 ? 'اتصال HTTPS بررسی شد' : 'اتصال صفحه اصلی روی HTTP بود',
             'response_time' => 'زمان پاسخ صفحه اصلی: '.(int) round($value).' میلی‌ثانیه',
             default => null,
         };

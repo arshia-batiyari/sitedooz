@@ -8,11 +8,14 @@ final class AuditProgress
 {
     public static function fromCrawl(int $pageNumber, int $pagesFound): int
     {
-        if ($pageNumber < 1 || $pagesFound < 1) {
+        if ($pageNumber < 1) {
             return 0;
         }
 
-        return (int) min(70, round(($pageNumber / $pagesFound) * 70));
+        $limit = max(1, (int) config('audit.crawl.max_pages'));
+        $expected = max(1, min(max($pagesFound, $pageNumber), $limit));
+
+        return (int) min(70, round(($pageNumber / $expected) * 70));
     }
 
     public static function fromAnalyzers(int $completed, int $total): int
