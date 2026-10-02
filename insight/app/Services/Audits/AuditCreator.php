@@ -15,7 +15,7 @@ final class AuditCreator
     /**
      * @param  array{url: string, name?: string|null, mobile?: string|null, email?: string|null, business_name?: string|null}  $input
      */
-    public function create(array $input): Audit
+    public function create(array $input, bool $queue = true): Audit
     {
         $normalized = $this->safety->assertSafe($input['url']);
         $host = (string) parse_url($normalized, PHP_URL_HOST);
@@ -32,7 +32,9 @@ final class AuditCreator
             'lead_source' => 'sitedooz_insight',
         ]);
 
-        RunAuditJob::dispatch($audit->id);
+        if ($queue) {
+            RunAuditJob::dispatch($audit->id);
+        }
 
         return $audit;
     }

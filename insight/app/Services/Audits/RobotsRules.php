@@ -14,11 +14,12 @@ final class RobotsRules
         public readonly array $groups,
         public readonly array $sitemaps,
         public readonly bool $found,
+        public readonly bool $checked = true,
     ) {}
 
-    public static function allowAll(): self
+    public static function allowAll(bool $checked = false): self
     {
-        return new self([], [], false);
+        return new self([], [], false, $checked);
     }
 
     public function isAllowed(string $url, string $userAgent): bool

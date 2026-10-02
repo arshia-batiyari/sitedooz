@@ -22,6 +22,7 @@ final class SafeHttpClient
         $timeout = (int) config('audit.crawl.timeout_seconds');
         $maxBytes = (int) config('audit.crawl.max_response_bytes');
         $chain = [];
+        $started = microtime(true);
 
         for ($hop = 0; $hop <= $maxRedirects; $hop++) {
             try {
@@ -74,7 +75,7 @@ final class SafeHttpClient
                 $headers[strtolower((string) $name)] = implode(', ', $values);
             }
 
-            return new HttpFetch($url, $current, $status, $chain, $headers, $body);
+            return new HttpFetch($url, $current, $status, $chain, $headers, $body, (int) round((microtime(true) - $started) * 1000));
         }
 
         throw new CrawlException('زنجیره ریدایرکت بیش از حد مجاز است.');

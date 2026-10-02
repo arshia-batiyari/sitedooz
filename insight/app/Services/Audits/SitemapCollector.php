@@ -27,6 +27,8 @@ final class SitemapCollector
         $seen = [];
         $sawDocument = false;
         $sawLocations = false;
+        $attempts = 0;
+        $transportFailures = 0;
 
         while ($queue !== [] && count($seen) < 5 && count($urls) < 500) {
             $mapUrl = array_shift($queue);
@@ -35,10 +37,13 @@ final class SitemapCollector
                 continue;
             }
             $seen[$normalized] = true;
+            $attempts++;
 
             try {
                 $fetch = $http->get($normalized);
             } catch (Throwable) {
+                $transportFailures++;
+
                 continue;
             }
 
@@ -78,6 +83,8 @@ final class SitemapCollector
             $status = 'ok';
         } elseif ($sawDocument) {
             $status = 'unreadable';
+        } elseif ($attempts > 0 && $transportFailures === $attempts) {
+            $status = 'unchecked';
         }
 
         return [

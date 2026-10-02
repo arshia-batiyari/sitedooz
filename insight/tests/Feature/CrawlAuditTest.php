@@ -106,7 +106,9 @@ class CrawlAuditTest extends TestCase
 
         $created = $this->postJson('/api/audits', ['url' => 'https://example.com']);
         $created->assertCreated()->assertJsonPath('data.status', 'queued');
-        $this->assertSame(['crawling', 'completed'], $seen);
+        $this->assertSame('crawling', $seen[0]);
+        $this->assertContains('analyzing', $seen);
+        $this->assertSame('completed', $seen[array_key_last($seen)]);
         $this->assertSame(AuditStatus::Completed, Audit::query()->where('uuid', $created->json('data.uuid'))->first()->status);
 
         $seen = [];

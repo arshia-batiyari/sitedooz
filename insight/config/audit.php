@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 return [
     'weights' => [
-        'technical_seo' => 20,
-        'performance' => 20,
-        'on_page_seo' => 15,
-        'mobile_ux' => 15,
-        'security' => 10,
-        'conversion' => 10,
-        'search_visibility' => 10,
+        'technical' => 40,
+        'seo' => 35,
+        'performance' => 25,
     ],
 
     'labels' => [
-        'technical_seo' => 'سئو فنی',
-        'performance' => 'سرعت و عملکرد',
-        'on_page_seo' => 'سئو داخل صفحه',
-        'mobile_ux' => 'موبایل و تجربه کاربری',
-        'security' => 'امنیت',
-        'conversion' => 'تبدیل بازدیدکننده',
-        'search_visibility' => 'دیده‌شدن در جستجو',
+        'technical' => 'فنی',
+        'seo' => 'سئو',
+        'performance' => 'سرعت',
+    ],
+
+    'performance' => [
+        'good_ms' => (int) env('AUDIT_RESPONSE_GOOD_MS', 800),
+        'poor_ms' => (int) env('AUDIT_RESPONSE_POOR_MS', 1800),
     ],
 
     'crawl' => [

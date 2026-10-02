@@ -19,7 +19,7 @@ final class SiteCrawler
         private readonly HtmlSnapshotParser $parser,
     ) {}
 
-    public function crawl(string $startUrl): CrawlResult
+    public function crawl(string $startUrl, ?CrawlObserver $observer = null): CrawlResult
     {
         $startUrl = $this->urls->assertSafe($startUrl);
         $deadline = microtime(true) + (int) config('audit.crawl.deadline_seconds');
@@ -31,13 +31,16 @@ final class SiteCrawler
         $origin = parse_url($startUrl, PHP_URL_SCHEME).'://'.$host;
 
         $robots = $this->fetchRobots($origin);
+        $observer?->robotsChecked($robots->checked, $robots->found);
         $sitemap = $this->sitemaps->collect($robots->sitemaps, $startUrl, $this->http);
+        $observer?->sitemapChecked($sitemap['status'], count($sitemap['urls']));
 
         $queue = [[$startUrl, 0]];
         $seen = [];
         $pages = [];
         $limited = false;
         $fetched = 0;
+        $homepageDuration = null;
 
         while ($queue !== [] && count($pages) < $maxPages) {
             if (microtime(true) > $deadline) {
@@ -75,6 +78,7 @@ final class SiteCrawler
                     'hasViewport' => false,
                     'textSample' => '',
                 ]);
+                $this->notify($observer, $pages, $queue, $seen, $pages[array_key_last($pages)]);
 
                 continue;
             }
@@ -92,7 +96,7 @@ final class SiteCrawler
                         ? $exception
                         : new CrawlException('دریافت صفحه اصلی ممکن نشد.', 0, $exception);
                 }
-                $pages[] = PageSnapshot::make([
+                $page = PageSnapshot::make([
                     'url' => $url,
                     'finalUrl' => $url,
                     'statusCode' => 0,
@@ -106,6 +110,8 @@ final class SiteCrawler
                     'wordCount' => 0,
                     'textSample' => '',
                 ]);
+                $pages[] = $page;
+                $this->notify($observer, $pages, $queue, $seen, $page);
 
                 continue;
             }
@@ -148,6 +154,10 @@ final class SiteCrawler
                 ]);
             }
 
+            if ($depth === 0) {
+                $homepageDuration = $fetch->durationMs;
+            }
+
             $pages[] = $page;
 
             if ($depth < $maxDepth && $page->isHtmlSuccess()) {
@@ -158,6 +168,8 @@ final class SiteCrawler
                     }
                 }
             }
+
+            $this->notify($observer, $pages, $queue, $seen, $page);
         }
 
         if ($queue !== [] && count($pages) >= $maxPages) {
@@ -178,8 +190,33 @@ final class SiteCrawler
                 'limited' => $limited,
                 'sitemap_count' => count($sitemap['urls']),
                 'robots_found' => $robots->found,
+                'homepage_duration_ms' => $homepageDuration,
+                'robots_checked' => $robots->checked,
+                'page_number' => count($pages),
+                'pages_found' => count($pages),
             ],
         );
+    }
+
+    /**
+     * @param  list<PageSnapshot>  $pages
+     * @param  list<array{0: string, 1: int}>  $queue
+     * @param  array<string, true>  $seen
+     */
+    private function notify(?CrawlObserver $observer, array $pages, array $queue, array $seen, PageSnapshot $page): void
+    {
+        if ($observer === null) {
+            return;
+        }
+
+        $pending = 0;
+        foreach ($queue as $item) {
+            if (! isset($seen[$item[0]])) {
+                $pending++;
+            }
+        }
+
+        $observer->pageCrawled($page, count($pages), count($pages) + $pending);
     }
 
     private function fetchRobots(string $origin): RobotsRules
@@ -196,11 +233,11 @@ final class SiteCrawler
         }
 
         if ($fetch->status === 404) {
-            return RobotsRules::allowAll();
+            return RobotsRules::allowAll(true);
         }
 
         if ($fetch->status >= 400) {
-            return new RobotsRules([], [], false);
+            return new RobotsRules([], [], false, true);
         }
 
         return $this->robotsParser->parse($fetch->body, true);

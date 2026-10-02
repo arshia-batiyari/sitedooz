@@ -17,6 +17,7 @@ final class HttpFetch
         public readonly array $redirectChain,
         public readonly array $headers,
         public readonly string $body,
+        public readonly int $durationMs = 0,
     ) {}
 
     public function header(string $name): string
