@@ -83,7 +83,7 @@ include __DIR__ . '/partials/header.php';
                     ['رشد دیجیتال', 'ساخت یا اصلاح، به‌همراه اندازه‌گیری و ادامه بهبود.', 'about-us'],
                 ];
                 foreach ($services as $service): ?>
-                <article class="soft-card rounded-3xl p-6 border border-slate-200/80">
+                <article class="soft-card rounded-3xl p-6 border border-slate-200/80 hover-lift">
                     <h3 class="font-black text-xl mb-3"><?= e($service[0]) ?></h3>
                     <p class="text-slate-600 leading-8 mb-5"><?= e($service[1]) ?></p>
                     <a href="<?= str_starts_with($service[2], '#') ? e($service[2]) : e(site_url($service[2])) ?>" class="text-emerald-700 font-extrabold" data-track="service_opened">بیشتر بدانید</a>
@@ -101,7 +101,7 @@ include __DIR__ . '/partials/header.php';
             </div>
             <div class="grid md:grid-cols-3 gap-8">
                 <?php foreach (array_slice($portfolio, 0, 6) as $item): ?>
-                <article class="case-card">
+                <article class="case-card hover-lift">
                     <img src="<?= asset_url($item['image'] ?? 'images/portfolio-corporate.svg') ?>" alt="<?= e($item['title'] ?? '') ?>" width="640" height="420" loading="lazy" decoding="async">
                     <div>
                         <p class="text-emerald-700 text-sm font-extrabold">نوع پروژه</p>
@@ -148,6 +148,37 @@ include __DIR__ . '/partials/header.php';
                 </li>
                 <?php endforeach; ?>
             </ol>
+        </div>
+    </section>
+
+    <section class="pb-16 bg-slate-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="stat-bar rounded-[2rem] grid grid-cols-2 lg:grid-cols-4">
+                <div class="stat-cell">
+                    <div>
+                        <strong class="stat-num"><span data-count-to="7">۰</span>-<span data-count-to="14">۰</span></strong>
+                        <span class="stat-label">روز تحویل سایت شرکتی</span>
+                    </div>
+                </div>
+                <div class="stat-cell">
+                    <div>
+                        <strong class="stat-num"><span data-count-to="3">۰</span>-<span data-count-to="6">۰</span></strong>
+                        <span class="stat-label">ماه تا نتیجه اولیه سئو</span>
+                    </div>
+                </div>
+                <div class="stat-cell">
+                    <div>
+                        <strong class="stat-num"><span data-count-to="100" data-count-suffix="%">۰</span></strong>
+                        <span class="stat-label">پنل مدیریت اختصاصی</span>
+                    </div>
+                </div>
+                <div class="stat-cell">
+                    <div>
+                        <strong class="stat-num">۲۴/۷</strong>
+                        <span class="stat-label">پشتیبانی پس از تحویل</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
