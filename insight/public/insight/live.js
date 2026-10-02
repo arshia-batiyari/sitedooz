@@ -228,6 +228,9 @@
         if (message) {
             feedLine('metric:' + metric.name, 'check', message);
         }
+        if (metric.name === 'response_time' && window.InsightGraph) {
+            window.InsightGraph.setResponseTime(metric.value);
+        }
     }
 
     function important(severity) {
@@ -245,6 +248,9 @@
         }
         bumpCount();
         feedLine(key, important(finding.severity) ? 'warn' : 'check', finding.title);
+        if (window.InsightGraph) {
+            window.InsightGraph.addFinding(finding);
+        }
         if (!important(finding.severity) || known.has('card:' + key)) {
             return;
         }
@@ -327,6 +333,9 @@
         if (report) {
             report.classList.remove('is-hidden');
         }
+        if (window.InsightGraph) {
+            window.InsightGraph.complete();
+        }
     }
 
     function fillList(list, rows, render) {
@@ -361,6 +370,9 @@
         }
         if (eventName === 'PageCrawled') {
             addPage(payload.url);
+            if (window.InsightGraph) {
+                window.InsightGraph.addPage(payload);
+            }
             if (payload.progress !== undefined) {
                 setProgress(payload.progress);
             }
@@ -493,6 +505,9 @@
         }
     }
 
+    if (window.InsightGraph) {
+        window.InsightGraph.mount(snapshot);
+    }
     requestAnimationFrame(function () {
         document.body.setAttribute('data-live', '1');
     });

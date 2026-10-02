@@ -9,6 +9,7 @@ use App\Enums\FindingSeverity;
 use App\Models\Audit;
 use App\Models\AuditFinding;
 use App\Models\AuditMetric;
+use App\Models\AuditPage;
 
 final class AuditSnapshot
 {
@@ -43,11 +44,8 @@ final class AuditSnapshot
             'categories' => $this->categories($audit),
             'labels' => config('audit.labels'),
             'progress' => $this->progress($audit),
-            'pages' => $audit->pages->map(fn ($page): array => [
-                'url' => $page->url,
-                'path' => $this->pathOf($page->url),
-                'status_code' => $page->status_code,
-            ])->values()->all(),
+            'pages' => $audit->pages->map(fn ($page): array => $this->pageNode($page))->values()->all(),
+            'response_time_ms' => $this->responseTime($audit),
             'findings_count' => count($findings),
             'live_findings' => $this->liveFindings($findings),
             'findings' => $findings,
@@ -178,6 +176,44 @@ final class AuditSnapshot
             'response_time' => 'زمان پاسخ صفحه اصلی: '.(int) round($value).' میلی‌ثانیه',
             default => null,
         };
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function pageNode(AuditPage $page): array
+    {
+        $meta = $page->metadata ?? [];
+        $links = [];
+        foreach ($meta['internal_links'] ?? [] as $link) {
+            if (is_string($link)) {
+                $links[] = $link;
+            }
+        }
+
+        return [
+            'url' => $page->url,
+            'final_url' => $page->final_url,
+            'path' => $this->pathOf($page->url),
+            'status_code' => $page->status_code,
+            'title' => $page->title,
+            'depth' => $page->depth,
+            'discovered_from' => is_string($meta['discovered_from'] ?? null) ? $meta['discovered_from'] : null,
+            'internal_link_count' => (int) ($meta['internal_link_count'] ?? 0),
+            'internal_links' => $links,
+            'has_meta_description' => (bool) ($meta['has_meta_description'] ?? false),
+            'has_h1' => (bool) ($meta['has_h1'] ?? false),
+        ];
+    }
+
+    private function responseTime(Audit $audit): ?int
+    {
+        $metric = $audit->metrics->firstWhere('name', 'response_time');
+        if (! $metric instanceof AuditMetric || $metric->value === null) {
+            return null;
+        }
+
+        return (int) round((float) $metric->value);
     }
 
     private function pathOf(string $url): string

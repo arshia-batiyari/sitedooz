@@ -12,5 +12,5 @@ interface CrawlObserver
 
     public function sitemapChecked(string $status, int $count): void;
 
-    public function pageCrawled(PageSnapshot $page, int $pageNumber, int $pagesFound): void;
+    public function pageCrawled(PageSnapshot $page, int $pageNumber, int $pagesFound, ?string $discoveredFrom): void;
 }

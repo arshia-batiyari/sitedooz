@@ -17,6 +17,7 @@ use App\Events\Audits\PageCrawled;
 use App\Events\Audits\ScoreUpdated;
 use App\Models\Audit;
 use App\Services\Audits\Analysis\FindingDraft;
+use App\Services\Audits\Data\PageSnapshot;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -32,15 +33,30 @@ final class AuditPublisher
         $this->send(new CrawlerStarted($audit->uuid));
     }
 
-    public function pageCrawled(Audit $audit, string $url, int $pageNumber, int $pagesFound, int $statusCode): void
+    public function pageCrawled(Audit $audit, PageSnapshot $page, int $pageNumber, int $pagesFound, ?string $discoveredFrom): void
     {
+        $headings = array_filter($page->h1, fn (string $heading): bool => trim($heading) !== '');
+        $title = $page->title;
+        if (is_string($title) && mb_strlen($title) > 180) {
+            $title = mb_substr($title, 0, 180);
+        }
+
         $this->send(new PageCrawled(
             $audit->uuid,
-            $url,
+            $page->url,
+            $page->finalUrl,
+            $this->pathOf($page->url),
             $pageNumber,
             $pagesFound,
-            $statusCode,
+            $page->statusCode,
             AuditProgress::fromCrawl($pageNumber, $pagesFound),
+            $title,
+            $page->depth,
+            $discoveredFrom,
+            count($page->internalLinks),
+            array_slice($page->internalLinks, 0, 24),
+            is_string($page->metaDescription) && trim($page->metaDescription) !== '',
+            $headings !== [],
         ));
     }
 
@@ -68,6 +84,7 @@ final class AuditPublisher
             $finding->severity->value,
             $finding->title,
             $finding->url,
+            $finding->recommendation,
         ));
     }
 
@@ -93,6 +110,16 @@ final class AuditPublisher
     public function failed(Audit $audit, string $reason): void
     {
         $this->send(new AuditFailed($audit->uuid, $reason));
+    }
+
+    private function pathOf(string $url): string
+    {
+        $path = parse_url($url, PHP_URL_PATH);
+        if (! is_string($path) || $path === '' || $path === '/') {
+            return '/';
+        }
+
+        return $path;
     }
 
     private function send(AuditBroadcast $event): void

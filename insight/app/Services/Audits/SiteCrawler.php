@@ -35,7 +35,7 @@ final class SiteCrawler
         $sitemap = $this->sitemaps->collect($robots->sitemaps, $startUrl, $this->http);
         $observer?->sitemapChecked($sitemap['status'], count($sitemap['urls']));
 
-        $queue = [[$startUrl, 0]];
+        $queue = [[$startUrl, 0, null]];
         $seen = [];
         $pages = [];
         $limited = false;
@@ -48,7 +48,10 @@ final class SiteCrawler
                 break;
             }
 
-            [$url, $depth] = array_shift($queue);
+            $item = array_shift($queue);
+            $url = $item[0];
+            $depth = (int) $item[1];
+            $discoveredFrom = is_string($item[2] ?? null) && $item[2] !== '' ? $item[2] : null;
             if (isset($seen[$url])) {
                 continue;
             }
@@ -78,7 +81,7 @@ final class SiteCrawler
                     'hasViewport' => false,
                     'textSample' => '',
                 ]);
-                $this->notify($observer, $pages, $queue, $seen, $pages[array_key_last($pages)]);
+                $this->notify($observer, $pages, $queue, $seen, $pages[array_key_last($pages)], $discoveredFrom);
 
                 continue;
             }
@@ -111,7 +114,7 @@ final class SiteCrawler
                     'textSample' => '',
                 ]);
                 $pages[] = $page;
-                $this->notify($observer, $pages, $queue, $seen, $page);
+                $this->notify($observer, $pages, $queue, $seen, $page, $discoveredFrom);
 
                 continue;
             }
@@ -164,12 +167,12 @@ final class SiteCrawler
                 foreach ($page->internalLinks as $link) {
                     $linkHost = strtolower((string) parse_url($link, PHP_URL_HOST));
                     if ($linkHost === $host && ! isset($seen[$link])) {
-                        $queue[] = [$link, $depth + 1];
+                        $queue[] = [$link, $depth + 1, $page->url];
                     }
                 }
             }
 
-            $this->notify($observer, $pages, $queue, $seen, $page);
+            $this->notify($observer, $pages, $queue, $seen, $page, $discoveredFrom);
         }
 
         if ($queue !== [] && count($pages) >= $maxPages) {
@@ -200,10 +203,10 @@ final class SiteCrawler
 
     /**
      * @param  list<PageSnapshot>  $pages
-     * @param  list<array{0: string, 1: int}>  $queue
+     * @param  list<array{0: string, 1: int, 2?: string|null}>  $queue
      * @param  array<string, true>  $seen
      */
-    private function notify(?CrawlObserver $observer, array $pages, array $queue, array $seen, PageSnapshot $page): void
+    private function notify(?CrawlObserver $observer, array $pages, array $queue, array $seen, PageSnapshot $page, ?string $discoveredFrom): void
     {
         if ($observer === null) {
             return;
@@ -216,7 +219,7 @@ final class SiteCrawler
             }
         }
 
-        $observer->pageCrawled($page, count($pages), count($pages) + $pending);
+        $observer->pageCrawled($page, count($pages), count($pages) + $pending, $discoveredFrom);
     }
 
     private function fetchRobots(string $origin): RobotsRules

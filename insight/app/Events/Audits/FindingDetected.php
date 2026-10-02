@@ -13,6 +13,7 @@ final class FindingDetected extends AuditBroadcast
         private readonly string $severity,
         private readonly string $title,
         private readonly ?string $url,
+        private readonly string $recommendation,
     ) {
         parent::__construct($auditUuid);
     }
@@ -30,6 +31,7 @@ final class FindingDetected extends AuditBroadcast
             'severity' => $this->severity,
             'title' => $this->title,
             'url' => $this->url,
+            'recommendation' => $this->recommendation,
         ];
     }
 }

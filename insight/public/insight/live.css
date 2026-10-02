@@ -168,6 +168,31 @@ body[data-live="1"] .score-ring { transition: background 420ms ease; }
     .score-block { align-items: flex-start; }
 }
 
+.graph-panel { margin-top: 16px; }
+.graph-tools { display: flex; gap: 8px; }
+.graph-tools button, .drawer button { margin-top: 0; background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.graph-stage { position: relative; height: 440px; margin-top: 12px; border-radius: 14px; background: color-mix(in srgb, var(--bg) 70%, var(--surface)); overflow: hidden; }
+#site-graph { width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; }
+.graph-empty { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: var(--muted); pointer-events: none; }
+.graph-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 12px 0 0; padding: 0; list-style: none; color: var(--muted); font-size: 0.82rem; }
+.graph-legend li { display: inline-flex; align-items: center; gap: 6px; }
+.graph-legend i { width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--muted); }
+.graph-legend i[data-state="warning"] { border-color: var(--warn); }
+.graph-legend i[data-state="error"] { border-color: var(--danger); }
+.graph-legend i[data-state="completed"] { border-color: var(--accent); }
+.graph-summary { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 12px; color: var(--muted); font-size: 0.92rem; }
+.drawer .note { display: block; color: var(--muted); }
+.drawer #drawer-body > button { width: 100%; margin-top: 8px; text-align: start; }
+.drawer { position: fixed; top: 0; bottom: 0; right: 0; width: min(380px, 100%); background: var(--surface); border-left: 1px solid var(--line); box-shadow: var(--shadow); padding: 24px; overflow: auto; transform: translateX(16px); opacity: 0; pointer-events: none; transition: opacity 180ms ease, transform 180ms ease; z-index: 20; }
+.drawer.is-open { opacity: 1; transform: none; pointer-events: auto; }
+.drawer h3, .drawer h4 { margin: 16px 0 8px; }
+.drawer p { display: flex; justify-content: space-between; gap: 12px; margin: 6px 0; }
+.drawer strong, .drawer article span { font-weight: 500; }
+.drawer article { border-top: 1px solid var(--line); padding: 8px 0; }
+.drawer article strong, .drawer article span { display: block; }
+.drawer article span { color: var(--muted); }
+#drawer-body > button { display: block; }
+
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
 }

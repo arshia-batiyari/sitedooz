@@ -35,9 +35,9 @@ final class BroadcastingCrawlObserver implements CrawlObserver
         $this->publisher->metric($this->audit, 'sitemap', $count, 'urls');
     }
 
-    public function pageCrawled(PageSnapshot $page, int $pageNumber, int $pagesFound): void
+    public function pageCrawled(PageSnapshot $page, int $pageNumber, int $pagesFound, ?string $discoveredFrom): void
     {
-        $this->persister->rememberPage($this->audit, $page);
+        $this->persister->rememberPage($this->audit, $page, $discoveredFrom);
         $this->persister->rememberCrawlProgress($this->audit, $pageNumber, $pagesFound);
 
         if ($page->depth === 0 && $page->statusCode > 0 && $page->error === null && ! $page->blockedByRobots) {
@@ -46,6 +46,6 @@ final class BroadcastingCrawlObserver implements CrawlObserver
             $this->publisher->metric($this->audit, 'https', $secure, 'bool');
         }
 
-        $this->publisher->pageCrawled($this->audit, $page->url, $pageNumber, $pagesFound, $page->statusCode);
+        $this->publisher->pageCrawled($this->audit, $page, $pageNumber, $pagesFound, $discoveredFrom);
     }
 }

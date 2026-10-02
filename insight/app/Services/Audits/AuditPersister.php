@@ -13,7 +13,7 @@ use App\Services\Audits\Data\PageSnapshot;
 
 final class AuditPersister
 {
-    public function rememberPage(Audit $audit, PageSnapshot $page): AuditPage
+    public function rememberPage(Audit $audit, PageSnapshot $page, ?string $discoveredFrom = null): AuditPage
     {
         $existing = $audit->pages()->where('url', $page->url)->first();
         if ($existing !== null) {
@@ -21,6 +21,7 @@ final class AuditPersister
         }
 
         $robots = strtolower($page->metaRobots ?? '');
+        $headings = array_filter($page->h1, fn (string $heading): bool => trim($heading) !== '');
 
         return $audit->pages()->create([
             'url' => $page->url,
@@ -39,6 +40,11 @@ final class AuditPersister
                 'error' => $page->error,
                 'blocked_by_robots' => $page->blockedByRobots,
                 'content_type' => $page->contentType,
+                'discovered_from' => $discoveredFrom,
+                'internal_link_count' => count($page->internalLinks),
+                'internal_links' => array_slice($page->internalLinks, 0, 24),
+                'has_meta_description' => is_string($page->metaDescription) && trim($page->metaDescription) !== '',
+                'has_h1' => $headings !== [],
             ],
         ]);
     }

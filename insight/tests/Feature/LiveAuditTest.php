@@ -69,7 +69,10 @@ class LiveAuditTest extends TestCase
         $this->assertSame(AuditStatus::Queued, Audit::query()->first()->status);
 
         $waiting = $this->get('/audits/'.$uuid);
-        $waiting->assertOk()->assertSee('امتیاز سایت‌دوز')->assertSee('panel failure is-hidden', false);
+        $waiting->assertOk()
+            ->assertSee('امتیاز سایت‌دوز')
+            ->assertSee('ساختار سایت')
+            ->assertSee('panel failure is-hidden', false);
 
         Event::fake();
         $this->postJson('/audits/'.$uuid.'/start')->assertOk();
@@ -85,9 +88,20 @@ class LiveAuditTest extends TestCase
         Event::assertDispatched(PageCrawled::class, function (PageCrawled $event) use ($uuid): bool {
             $payload = $event->broadcastWith();
 
-            return $payload['page_number'] >= 1
-                && isset($payload['url'], $payload['pages_found'])
+            return $payload['path'] === '/'
+                && $payload['discovered_from'] === null
+                && $payload['depth'] === 0
+                && $payload['internal_link_count'] >= 1
+                && in_array('https://example.com/gone', $payload['internal_links'], true)
                 && $event->broadcastOn()[0]->name === 'audit.'.$uuid;
+        });
+        Event::assertDispatched(PageCrawled::class, function (PageCrawled $event): bool {
+            $payload = $event->broadcastWith();
+
+            return $payload['path'] === '/gone'
+                && $payload['discovered_from'] === 'https://example.com/'
+                && $payload['depth'] === 1
+                && $payload['status_code'] === 404;
         });
         Event::assertDispatched(MetricCalculated::class, fn (MetricCalculated $event): bool => $event->broadcastWith()['name'] === 'robots_txt');
         Event::assertDispatched(FindingDetected::class, function (FindingDetected $event): bool {

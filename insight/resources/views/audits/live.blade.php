@@ -37,6 +37,27 @@
             </div>
         </section>
 
+        <section class="panel graph-panel">
+            <div class="panel-head">
+                <h2>ساختار سایت</h2>
+                <div class="graph-tools">
+                    <button type="button" id="graph-fit">نمایش کامل</button>
+                    <button type="button" id="graph-reset">بازنشانی نما</button>
+                </div>
+            </div>
+            <div class="graph-stage">
+                <canvas id="site-graph" aria-label="نمودار ساختار سایت"></canvas>
+                <p class="graph-empty" id="graph-empty">با بررسی هر صفحه، گره آن اینجا اضافه می‌شود.</p>
+            </div>
+            <ul class="graph-legend">
+                <li><i data-state="discovered"></i>کشف‌شده</li>
+                <li><i data-state="warning"></i>هشدار</li>
+                <li><i data-state="error"></i>مشکل مهم</li>
+                <li><i data-state="completed"></i>سالم</li>
+            </ul>
+            <div class="graph-summary is-hidden" id="graph-summary"></div>
+        </section>
+
         <section class="grid">
             <article class="panel">
                 <div class="panel-head"><h2>فعالیت</h2></div>
@@ -127,9 +148,14 @@
             </ol>
         </section>
     </main>
+    <aside id="page-drawer" class="drawer" aria-hidden="true">
+        <button type="button" id="drawer-close">بستن</button>
+        <div id="drawer-body"></div>
+    </aside>
     <script id="audit-snapshot" type="application/json">@json($snapshot)</script>
     <script src="{{ asset('insight/vendor/pusher.min.js') }}"></script>
     <script src="{{ asset('insight/vendor/echo.iife.js') }}"></script>
+    <script src="{{ asset('insight/graph.js') }}"></script>
     <script src="{{ asset('insight/live.js') }}"></script>
 </body>
 </html>
