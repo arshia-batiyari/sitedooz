@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Services\Audits\Data\RuleConfig;
 use Illuminate\Database\Eloquent\Model;
 
 class AuditRule extends Model
@@ -27,16 +26,5 @@ class AuditRule extends Model
             'is_active' => 'boolean',
             'weight' => 'integer',
         ];
-    }
-
-    public function toConfig(): RuleConfig
-    {
-        return new RuleConfig(
-            key: $this->key,
-            category: $this->category,
-            severity: $this->severity,
-            weight: (int) $this->weight,
-            isActive: (bool) $this->is_active,
-        );
     }
 }

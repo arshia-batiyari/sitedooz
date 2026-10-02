@@ -33,7 +33,6 @@
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
         <env name="AUDIT_CRAWL_DELAY_MS" value="0"/>
-        <env name="PAGESPEED_API_KEY" value=""/>
         <env name="APP_LOCALE" value="fa"/>
     </php>
 </phpunit>

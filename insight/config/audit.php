@@ -33,10 +33,4 @@ return [
         'delay_ms' => (int) env('AUDIT_CRAWL_DELAY_MS', 200),
         'user_agent' => 'SitedoozInsightBot/1.0 (+https://sitedooz.ir)',
     ],
-
-    'pagespeed' => [
-        'endpoint' => 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed',
-        'timeout_seconds' => 25,
-        'strategies' => ['mobile', 'desktop'],
-    ],
 ];

@@ -1,8 +1,8 @@
 # سایت‌دوز اینسایت
 
-ابزار بررسی سایت برای گزارش کسب‌وکارمحور. منطق ممیزی داخل همین برنامه لاراول است و سایت بازاریابی اصلی را تغییر نمی‌دهد.
+فاز ۱: ساخت ممیزی، اعتبارسنجی نشانی، جلوگیری از درخواست به آدرس‌های داخلی، و خزش محدود. گزارش ظاهری، PageSpeed، هوش مصنوعی و سرچ کنسول در این فاز نیستند.
 
-## اجرا
+سایت بازاریابی اصلی تغییر نمی‌کند. این برنامه دیتابیس خودش را دارد.
 
 ```bash
 composer install
@@ -10,18 +10,11 @@ cp .env.example .env
 php artisan key:generate
 php artisan migrate --seed
 php artisan serve
+php artisan queue:work
 ```
 
-صف را با `php artisan queue:work` پردازش کنید. تا وقتی Redis نباشد، `QUEUE_CONNECTION=database` کافی است.
+- `POST /api/audits` با `{ "url": "https://example.com" }` شناسه و وضعیت `queued` برمی‌گرداند.
+- `GET /api/audits/{uuid}` وضعیت را برمی‌گرداند.
+- `GET /api/audits/{uuid}/pages` صفحه‌های خزش‌شده را برمی‌گرداند.
 
-`PAGESPEED_API_KEY` اختیاری است. اگر خالی باشد، بخش سرعت «در دسترس نیست» می‌ماند و ممیزی شکست نمی‌خورد.
-
-`INSIGHT_ADMIN_EMAIL` و `INSIGHT_ADMIN_PASSWORD` را در `.env` بگذارید و سیدر را اجرا کنید. ورود مدیریت: `/admin/login`.
-
-API:
-
-- `POST /api/audits`
-- `GET /api/audits/{uuid}`
-- `GET /api/audits/{uuid}/summary`
-- `GET /api/audits/{uuid}/findings`
-- `GET /api/audits/{uuid}/pages`
+خزش `robots.txt` را رعایت می‌کند، `sitemap.xml` را اگر باشد ثبت می‌کند، نشانی را نرمال می‌کند، و با سقف صفحه، عمق، و زمان درخواست متوقف می‌شود.

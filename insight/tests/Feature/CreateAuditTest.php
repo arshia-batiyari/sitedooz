@@ -45,5 +45,6 @@ class CreateAuditTest extends TestCase
         Queue::assertPushed(RunAuditJob::class);
 
         $this->postJson('/api/audits', ['url' => 'http://127.0.0.1'])->assertStatus(422);
+        $this->postJson('/api/audits', ['url' => 'not-a-url'])->assertStatus(422);
     }
 }
