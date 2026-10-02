@@ -408,6 +408,20 @@ function site_url(string $path = ''): string
     return ($base === '' ? '' : $base) . '/' . $path;
 }
 
+function insight_public_url(): string
+{
+    $configured = getenv('INSIGHT_PUBLIC_URL');
+    if (is_string($configured) && $configured !== '') {
+        return rtrim($configured, '/');
+    }
+    $host = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
+    if (str_starts_with($host, '127.0.0.1') || str_starts_with($host, 'localhost')) {
+        return 'http://127.0.0.1:8000';
+    }
+
+    return 'https://insight.sitedooz.ir';
+}
+
 function asset_url(string $path): string { return site_url($path); }
 
 function absolute_url(string $path = ''): string
@@ -646,7 +660,7 @@ function svg_icon(string $name, string $class = 'w-5 h-5'): string
 
 // ─── رندر head صفحات عمومی ───────────────────────────────────────────────────
 
-function render_public_head(string $title, string $description, string $canonical = '', string $image = '', bool $preloadHero = false): void
+function render_public_head(string $title, string $description, string $canonical = '', string $image = '', bool $preloadHero = false, array $extraStyles = []): void
 {
     $canonical = $canonical ?: site_url(ltrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/'));
     // prefer existing optimized assets
@@ -791,6 +805,9 @@ function render_public_head(string $title, string $description, string $canonica
         main, header, footer, section { max-width: 100%; }
         .svg-icon { display:inline-block; vertical-align:-0.18em; flex-shrink:0; }
         .logo-box { width: 119px; height: 60px; border-radius: 18px; overflow: hidden;display: flex; align-items: center; justify-content: center; }
+        a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid #0f766e; outline-offset: 3px; }
+        .nav-audit { display:inline-flex; align-items:center; justify-content:center; background:#0f766e; color:#fff; font-weight:800; border-radius:999px; padding:.55rem .9rem; white-space:nowrap; }
+        .nav-audit:hover { background:#115e59; color:#fff; }
         .hero-bg { position:relative; overflow:hidden; background: radial-gradient(circle at 82% 18%, rgba(45,212,191,.28), transparent 32%), radial-gradient(circle at 18% 82%, rgba(56,189,248,.18), transparent 35%), linear-gradient(135deg, #071321 0%, #0f172a 42%, #0f766e 100%); }
         .hero-bg:before { content:""; position:absolute; inset:-25%; background: linear-gradient(120deg, transparent 34%, rgba(255,255,255,.055) 50%, transparent 66%); animation: shine 12s linear infinite; pointer-events:none; }
         .hero-bg .hero-grid-pattern { position:absolute; inset:0; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size:44px 44px; -webkit-mask-image:radial-gradient(ellipse 70% 60% at 60% 30%, #000 40%, transparent 85%); mask-image:radial-gradient(ellipse 70% 60% at 60% 30%, #000 40%, transparent 85%); pointer-events:none; }
@@ -1148,6 +1165,9 @@ function render_public_head(string $title, string $description, string $canonica
           .blog-layout .blog-related-col .blog-rail{grid-template-columns:1fr}
         }
       </style>
+      <?php foreach ($extraStyles as $styleHref): ?>
+      <link rel="stylesheet" href="<?= e(asset_url((string) $styleHref)) ?>" />
+      <?php endforeach; ?>
     </head>
     <?php
 }
