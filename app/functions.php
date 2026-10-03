@@ -1164,6 +1164,19 @@ function render_public_head(string $title, string $description, string $canonica
         @media (max-width: 560px) {
           .blog-layout .blog-related-col .blog-rail{grid-template-columns:1fr}
         }
+        .site-footer { background:#0b1220; color:#e7e5e4; margin-top:0; }
+        .site-footer-inner { width:min(1120px, calc(100% - 32px)); margin:0 auto; padding:56px 0 36px; display:grid; grid-template-columns:1.4fr .8fr .8fr .9fr; gap:36px; }
+        .site-footer h2 { margin:0 0 14px; color:#fff; font-size:.95rem; font-weight:800; }
+        .site-footer a { color:#d6d3d1; text-decoration:none; }
+        .site-footer nav, .site-footer-inner > div:last-child { display:flex; flex-direction:column; gap:10px; }
+        .site-footer nav a:hover, .site-footer-inner > div:last-child a:hover { color:#5eead4; }
+        .site-footer-brand p { margin:14px 0 18px; color:#a8a29e; line-height:1.9; max-width:28rem; }
+        .site-footer-logo { display:inline-flex; width:108px; height:48px; border-radius:14px; overflow:hidden; background:#fff; }
+        .site-footer-logo img { width:100%; height:100%; object-fit:cover; }
+        .site-footer-phone { direction:ltr; text-align:right; font-weight:800; color:#fff !important; letter-spacing:.02em; }
+        .site-footer-bar { border-top:1px solid rgba(255,255,255,.08); text-align:center; color:#a8a29e; font-size:.85rem; padding:16px; }
+        @media (max-width: 900px) { .site-footer-inner { grid-template-columns:1fr 1fr; } }
+        @media (max-width: 640px) { .site-footer-inner { grid-template-columns:1fr; padding-top:40px; } }
       </style>
       <?php foreach ($extraStyles as $styleHref): ?>
       <link rel="stylesheet" href="<?= e(asset_url((string) $styleHref)) ?>" />
