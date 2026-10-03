@@ -1,39 +1,25 @@
 <?php $settings = $settings ?? get_settings(); ?>
-  <footer class="site-footer">
-    <div class="site-footer-inner">
-      <div class="site-footer-brand">
-        <a href="<?= site_url() ?>" class="site-footer-logo" aria-label="<?= e(APP_NAME) ?>">
-          <img src="<?= asset_url('images/logo-optimized.webp') ?>" width="120" height="48" alt="لوگوی سایت دوز">
-        </a>
-        <p><?= e($settings['footer_description'] ?? 'سایت دوز وب‌سایت، سئو و بهینه‌سازی را به‌صورت یک مسیر رشد جلو می‌برد.') ?></p>
-        <a class="nav-audit" href="<?= site_url('#audit') ?>">تحلیل رایگان سایت</a>
-      </div>
-      <nav aria-label="خدمات">
-        <h2>خدمات</h2>
-        <a href="<?= site_url('tarahi-site-sherkati-gorgan') ?>">طراحی سایت شرکتی</a>
-        <a href="<?= site_url('tarahi-site-foroushgahi-gorgan') ?>">فروشگاه اینترنتی</a>
-        <a href="<?= site_url('seo-sherkati-gorgan') ?>">سئو سایت شرکتی</a>
-        <a href="<?= site_url('seo-foroushgahi-gorgan') ?>">سئو سایت فروشگاهی</a>
-      </nav>
-      <nav aria-label="صفحات سایت">
-        <h2>سایت دوز</h2>
-        <a href="<?= site_url('nemoone-kar-tarahi-site-gorgan') ?>">نمونه‌کارها</a>
-        <a href="<?= site_url('blog') ?>">وبلاگ</a>
-        <a href="<?= site_url('about-us') ?>">درباره ما</a>
-        <a href="<?= site_url('sozalat-motadavel-tarahi-site') ?>">سوالات متداول</a>
-        <a href="<?= site_url('hazine-tarahi-site-gorgan') ?>">هزینه طراحی سایت</a>
-        <a href="<?= site_url('hazine-seo-site-gorgan') ?>">هزینه سئو</a>
-      </nav>
-      <div>
-        <h2>تماس</h2>
-        <?php if (!empty($settings['phone'])): ?>
-        <a href="tel:<?= e(preg_replace('/\D+/', '', $settings['phone'])) ?>" class="site-footer-phone"><?= e($settings['phone']) ?></a>
-        <?php endif; ?>
-        <a href="<?= site_url('moshavere-tarahi-site-gorgan') ?>">صفحه تماس</a>
-        <a href="<?= site_url('moshavere-tarahi-site-gorgan') ?>#consultation-form" data-track="consultation_requested">درخواست بررسی برای رفع مشکلات</a>
-      </div>
+  <footer class="relative overflow-hidden bg-slate-950 text-white py-16 text-center">
+    <div class="absolute inset-0 opacity-30" style="background:radial-gradient(circle at 80% 20%,#10b981,transparent 30%),radial-gradient(circle at 20% 80%,#38bdf8,transparent 28%)"></div>
+    <div class="relative z-10">
+    <h2 class="text-3xl font-bold mb-6"><?= e($settings['footer_title'] ?? 'آماده‌ای سایتت رو حرفه‌ای داشته باشی؟') ?></h2>
+    <p class="text-white/80 mb-10 max-w-xl mx-auto px-4"><?= e($settings['footer_description'] ?? 'همین حالا تماس بگیر و مشاوره رایگان دریافت کن.') ?></p>
+    <a href="<?= site_url('#audit') ?>" class="call-btn inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 transition px-8 py-4 rounded-xl text-lg font-bold shadow-lg hover:scale-105 active:scale-95">
+      <?= svg_icon('phone', 'w-5 h-5 call-icon') ?> تحلیل رایگان سایت
+    </a>
+    <?php if (!empty($settings['phone'])): ?>
+    <p class="mt-6 text-white/70 text-sm">یا مستقیم تماس بگیرید:
+        <a href="tel:<?= e(preg_replace('/\D+/', '', $settings['phone'])) ?>" class="text-emerald-300 font-black hover:underline" style="direction:ltr; display:inline-block;"><?= e($settings['phone']) ?></a>
+    </p>
+    <?php endif; ?>
+    <nav class="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm text-white/65" aria-label="لینک‌های مهم">
+      <a class="hover:text-emerald-300" href="<?= site_url('nemoone-kar-tarahi-site-gorgan') ?>">نمونه‌کارها</a>
+      <a class="hover:text-emerald-300" href="<?= site_url('sozalat-motadavel-tarahi-site') ?>">سوالات متداول</a>
+      <a class="hover:text-emerald-300" href="<?= site_url('hazine-seo-site-gorgan') ?>">هزینه سئو</a>
+      <a class="hover:text-emerald-300" href="<?= site_url('hazine-tarahi-site-gorgan') ?>">هزینه طراحی سایت</a>
+    </nav>
+    <div class="mt-8 text-sm text-white/50">© <?= e(APP_NAME) ?></div>
     </div>
-    <div class="site-footer-bar">© <?= e(APP_NAME) ?></div>
   </footer>
 
   <script>
@@ -61,6 +47,23 @@
 		window.addEventListener('scroll', onScroll, { passive: true });
 		window.addEventListener('resize', onScroll);
 		updateProgress();
+	})();
+
+	(function () {
+		var header = document.getElementById('siteHeader');
+		if (!header) return;
+		var ticking = false;
+		function updateHeader() {
+			header.classList.toggle('is-scrolled', (window.scrollY || document.documentElement.scrollTop || 0) > 8);
+			ticking = false;
+		}
+		window.addEventListener('scroll', function () {
+			if (!ticking) {
+				window.requestAnimationFrame(updateHeader);
+				ticking = true;
+			}
+		}, { passive: true });
+		updateHeader();
 	})();
 
 	function toggleSeoContent(expand) {
