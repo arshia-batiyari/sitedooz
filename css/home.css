@@ -61,29 +61,28 @@
 }
 
 .growth-flow {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
     margin: 28px 0 0;
     padding: 0;
     list-style: none;
 }
 
 .growth-flow li {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
     background: #fff;
     border: 1px solid #e7e5e4;
-    border-radius: 999px;
-    padding: 8px 14px;
+    border-radius: 18px;
+    padding: 16px 14px;
     font-weight: 800;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, .04);
 }
 
-.growth-flow li:not(:last-child)::after {
-    content: "←";
-    color: #a8a29e;
-    font-weight: 500;
+.growth-flow b {
+    display: block;
+    margin-bottom: 8px;
+    color: #0f766e;
+    font-size: .8rem;
 }
 
 .insight-preview {
@@ -177,8 +176,11 @@
 .insight-columns li:nth-child(2) { animation-delay: .4s; }
 .insight-columns li:nth-child(3) { animation-delay: .8s; }
 
-.problem-list { display: grid; gap: 8px; margin-top: 18px; }
-.problem-list li { background: #fff; border: 1px solid #e7e5e4; border-radius: 14px; padding: 10px 12px; }
+.problem-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.problem-list li { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid #e7e5e4; border-radius: 16px; padding: 14px; box-shadow: 0 10px 24px rgba(15, 23, 42, .04); }
+.problem-list span { color: #0f766e; font-weight: 800; font-size: .8rem; }
+.final-cta { border-radius: 28px; padding: 40px 32px; color: #fff; background: radial-gradient(circle at 85% 15%, rgba(45,212,191,.28), transparent 32%), linear-gradient(135deg, #071321 0%, #0f172a 48%, #0f766e 100%); box-shadow: 0 24px 50px rgba(15, 23, 42, .16); }
+.final-cta .audit-form { margin-top: 8px; }
 
 .case-card { background: #fff; border: 1px solid #e7e5e4; border-radius: 24px; overflow: hidden; }
 .case-card img { width: 100%; height: 190px; object-fit: cover; }
@@ -189,10 +191,15 @@
 @keyframes insightProgress { 0% { width: 12%; } 50% { width: 78%; } 100% { width: 12%; } }
 @keyframes insightLine { 0%, 100% { opacity: .4; } 40% { opacity: 1; } }
 
+@media (max-width: 900px) {
+    .growth-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 @media (max-width: 720px) {
     .audit-form { flex-direction: column; }
     .audit-form button { width: 100%; }
-    .insight-preview-grid, .insight-columns { grid-template-columns: 1fr; }
+    .insight-preview-grid, .insight-columns, .problem-list { grid-template-columns: 1fr; }
+    .final-cta { padding: 28px 18px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
